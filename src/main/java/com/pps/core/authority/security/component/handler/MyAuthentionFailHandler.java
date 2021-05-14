@@ -27,15 +27,14 @@ import java.util.function.BiFunction;
 @Slf4j
 public class MyAuthentionFailHandler implements AuthenticationFailureHandler {
 
-    private BiFunction<Object,Map,Map> function;
+    private BiFunction<AuthenticationException,Map,Map> function;
 
     public  String type;
 
     public  MyAuthentionFailHandler(){
 
         this.type="表单";
-        function=(o,m)->{
-            AuthenticationException e=(AuthenticationException)o;
+        function=(e,m)->{
             m.put("error","登陆错误（表单）："+e.getMessage());
             return  m;
 
@@ -45,8 +44,7 @@ public class MyAuthentionFailHandler implements AuthenticationFailureHandler {
     public MyAuthentionFailHandler(String type) {
 
         this.type = type;
-        function=(o,m)->{
-            AuthenticationException e=(AuthenticationException)o;
+        function=(e,m)->{
             m.put("error","登陆错误（表单）："+e.getMessage());
             return  m;
 
@@ -54,7 +52,7 @@ public class MyAuthentionFailHandler implements AuthenticationFailureHandler {
 
 
     }
-    public MyAuthentionFailHandler(String type,BiFunction<Object,Map,Map> function) {
+    public MyAuthentionFailHandler(String type,BiFunction<AuthenticationException,Map,Map> function) {
 
         this.type = type;
         this.function=function;

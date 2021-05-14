@@ -1,6 +1,8 @@
 
 package com.pps.core.authority.security.privider;
 
+import org.springframework.security.core.AuthenticationException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -22,10 +24,9 @@ public interface CustomLoginService {
 
     /**
      * 登陆失败自定义处理
-     * @param username
      * @return
      */
-    Map   LoginFail(String username);
+    Map   LoginFail(AuthenticationException exception, Map responseMap);
 
     /**
      * 登陆退出自定义

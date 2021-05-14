@@ -27,6 +27,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
@@ -150,10 +151,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 };
                 //表单登录失败逻辑 o为Authentication
-                BiFunction<Object, Map,Map> formFailfunction=(o,m)->{
+                BiFunction<AuthenticationException, Map,Map> formFailfunction=(e, m)->{
                   if(customService!=null){
-                      Authentication authentication=(Authentication)o;
-                      Map map = customService.LoginFail((String) authentication.getPrincipal());
+                      Map map = customService.LoginFail(e,m);
                       m.put("data",map);
                   }
                   return  m;
