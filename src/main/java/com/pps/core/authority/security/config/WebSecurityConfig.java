@@ -153,8 +153,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //表单登录失败逻辑 o为Authentication
                 BiFunction<AuthenticationException, Map,Map> formFailfunction=(e, m)->{
                   if(customService!=null){
-                      Map map = customService.LoginFail(e,m);
-                      m.put("data",map);
+                      customService.LoginFail(e,m);
                   }
                   return  m;
                };
@@ -203,6 +202,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             log.info("已开启跨域处理： 系统生成跨域处理过滤器");
             CrossOriginFilter crossOriginFilter=new CrossOriginFilter();
             http.addFilterBefore(crossOriginFilter, SecurityContextPersistenceFilter.class);
+        }
+        if(customService!=null){
+            customService.HttpSecurityCustom(http);
         }
         // 关闭CSRF跨域
         http.csrf().disable();

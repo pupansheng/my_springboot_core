@@ -1,6 +1,7 @@
 
 package com.pps.core.authority.security.privider;
 
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.AuthenticationException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public interface CustomLoginService {
      * 登陆失败自定义处理
      * @return
      */
-    Map   LoginFail(AuthenticationException exception, Map responseMap);
+    void    LoginFail(AuthenticationException exception, Map responseMap);
 
     /**
      * 登陆退出自定义
@@ -34,5 +35,8 @@ public interface CustomLoginService {
      * @param response
      */
     void   logoutCustom(HttpServletRequest request, HttpServletResponse response);
+
+
+    void   HttpSecurityCustom(HttpSecurity http);
 
 }
