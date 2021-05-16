@@ -62,6 +62,10 @@ public class MyBatisDataSourceProcessor implements ImportBeanDefinitionRegistrar
 
                 BindResult<BaseSourceConfig> bind = binder.bind(DATASOURCE_PREFIX + ADD_CHAR + dataSourseName, BaseSourceConfig.class);
                 BaseSourceConfig baseSourceConfig = bind.get();
+                BindResult<GlobalConfig.DbConfig> bindM = binder.bind(DATASOURCE_PREFIX + ADD_CHAR + dataSourseName+ADD_CHAR+"mybatis-config.configuration.global-config.db-config", GlobalConfig.DbConfig.class);
+                GlobalConfig.DbConfig dbConfig = bindM.orElse(new GlobalConfig.DbConfig());
+                GlobalConfig globalConfig = baseSourceConfig.getGlobalConfig();
+                globalConfig.setDbConfig(dbConfig);
                 log.info("数据源：{} 自动配置 开始------------------------------------------------",dataSourseName);
                 log.info("为数据源：{}配置数据源--------------------------------",dataSourseName);
                 //配置数据源
@@ -221,7 +225,8 @@ public class MyBatisDataSourceProcessor implements ImportBeanDefinitionRegistrar
         if (!ValidateUtil.isEmpty(typeAliasesPackageList)) {
             sqlMap.put("typeAliasesPackage", util.cutEndChar(typeAliasesPackageList));
         }
-        sqlMap.put("globalConfig", baseSourceConfig.getGlobalConfig());
+
+        sqlMap.put("globalConfig",baseSourceConfig.getGlobalConfig());
         sqlMap.put("configuration",baseSourceConfig.getConfiguration());
         sqlMap.put("mapperLocations", mapperLocationsList);
         sqlMap.put("databaseIdProvider", util.buildDatabaseIdProvider());
